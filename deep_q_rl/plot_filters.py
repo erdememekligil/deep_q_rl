@@ -15,7 +15,12 @@ import cPickle
 import lasagne.layers
 
 net_file = open(sys.argv[1], 'r')
-network = cPickle.load(net_file)
+try:
+    network = cPickle.load(net_file)
+except EOFError:
+    net_file.close()
+    net_file = open(sys.argv[1], 'rb')
+    network = cPickle.load(net_file)
 print network
 q_layers = lasagne.layers.get_all_layers(network.l_out)
 w = q_layers[1].W.get_value()

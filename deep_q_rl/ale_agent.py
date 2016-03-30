@@ -98,7 +98,12 @@ class NeuralAgent(AgentBase):
                 params=self.params)
         else:
             handle = open(self.params.nn_file, 'r')
-            self.network = cPickle.load(handle)
+            try:
+                self.network = cPickle.load(handle)
+            except EOFError:
+                handle.close()
+                handle = open(self.params.nn_file, 'rb')
+                self.network = cPickle.load(handle)
 
     # region Dumping/Logging
     def _create_export_dir(self):
@@ -150,7 +155,7 @@ class NeuralAgent(AgentBase):
 
     def _persist_network(self, network_filename):
         full_filename = os.path.join(self.export_dir, network_filename)
-        with open(full_filename, 'w') as net_file:
+        with open(full_filename, 'wb') as net_file:
             cPickle.dump(self.network, net_file, -1)
 
     # endregion
