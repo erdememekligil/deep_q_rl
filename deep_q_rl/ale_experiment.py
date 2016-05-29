@@ -74,22 +74,28 @@ class ALEExperiment(object):
         """
         self.terminal_lol = False  # Make sure each epoch starts with a reset.
         steps_left = num_steps
+        total_steps = num_steps
+        episode = 0
+        episode_start_time = time.time()
+        epoch_avg_reward = 0.0
+        t = episode_start_time
+
         while steps_left > 0:
-            prefix = "testing" if testing else "training"
+            prefix = "Testing" if testing else "Training"
+            # logging.info(prefix + " epoch: " + str(epoch) + " steps_left: " + str(steps_left))
+            _, num_steps, episode_reward = self.run_episode(steps_left, testing)
 
-            t0 = time.time()
-            _, num_steps = self.run_episode(steps_left, testing)
+            epoch_avg_reward = (epoch_avg_reward * episode + episode_reward) / (episode + 1)
+            episode += 1
+
+            episode_time = time.time() - t
+            t = time.time()
+            total_time = t - episode_start_time
+
             steps_left -= num_steps
-            t1 = time.time()
-            total_time = t1 - t0
 
-            logging.info("[{:8}] epoch {:3} | num_steps {:7} " \
-                         "steps_left {:7} steps/second: {:>7.2f}"
-                         .format(prefix,
-                                 epoch,
-                                 num_steps,
-                                 steps_left,
-                                 num_steps / total_time))
+            logging.info("{} episode {} of epoch {} completed with reward {} in {:.1f} sec. Total time: {:.1f}. Epoch avg reward: {:.2f}. Steps: {}/{}. Steps/sec: {:.2f}".format(
+                    prefix, episode, epoch, episode_reward, episode_time, total_time, epoch_avg_reward, total_steps - steps_left, total_steps, num_steps / episode_time))
 
     def _init_episode(self):
         """ This method resets the game if needed, performs enough null
@@ -151,6 +157,7 @@ class ALEExperiment(object):
 
         action = self.agent.start_episode(self.get_observation())
         num_steps = 0
+        episode_reward = 0
         terminal = False
 
         while True:
@@ -158,6 +165,7 @@ class ALEExperiment(object):
             self.terminal_lol = (self.death_ends_episode and not testing and
                                  self.ale.lives() < start_lives)
             terminal = self.ale.game_over() or self.terminal_lol
+            episode_reward += reward
             num_steps += 1
 
             if terminal or num_steps >= max_steps:
@@ -166,7 +174,8 @@ class ALEExperiment(object):
 
             action = self.agent.step(reward, self.get_observation())
 
-        return terminal, num_steps
+
+        return terminal, num_steps, episode_reward
 
     def get_observation(self):
         """ Resize and merge the previous two screen images """
