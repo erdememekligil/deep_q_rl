@@ -132,13 +132,17 @@ class NeuralAgent(AgentBase):
         self.results_file.write(
             'epoch,num_episodes,total_reward,reward_per_epoch,mean_q\n')
         self.results_file.flush()
+        self.results_file.close()
 
     def _open_learning_file(self):
+        logging.info("OPENING " + self.export_dir + '/learning.csv')
         self.learning_file = open(self.export_dir + '/learning.csv', 'w', 0)
         self.learning_file.write('mean_loss,epsilon\n')
         self.learning_file.flush()
 
     def _update_results_file(self, epoch, num_episodes, holdout_sum):
+        logging.info("OPENING " + self.export_dir + '/results.csv')
+        self.results_file = open(self.export_dir + '/results.csv', 'a', 0)
         out = "{},{},{},{},{}\n".format(epoch, num_episodes,
                                         self.total_reward,
                                         self.total_reward / float(num_episodes),
@@ -146,6 +150,7 @@ class NeuralAgent(AgentBase):
 
         self.results_file.write(out)
         self.results_file.flush()
+        self.results_file.close()
 
     def _update_learning_file(self):
         out = "{},{}\n".format(np.mean(self.loss_averages),
