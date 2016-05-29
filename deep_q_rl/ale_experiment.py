@@ -12,6 +12,7 @@ import cv2
 # This is appropriate for breakout, but it may need to be modified
 # for other games.
 import time
+from deep_q_rl.visual_interface import VisualInterface
 
 CROP_OFFSET = 8
 
@@ -19,7 +20,7 @@ CROP_OFFSET = 8
 class ALEExperiment(object):
     def __init__(self, ale, agent, resized_width, resized_height,
                  resize_method, num_epochs, epoch_length, test_length,
-                 frame_skip, death_ends_episode, max_start_nullops, rng):
+                 frame_skip, death_ends_episode, max_start_nullops, rng, display_screen, all_actions):
         self.ale = ale
         self.agent = agent
         self.num_epochs = num_epochs
@@ -27,7 +28,10 @@ class ALEExperiment(object):
         self.test_length = test_length
         self.frame_skip = frame_skip
         self.death_ends_episode = death_ends_episode
-        self.min_action_set = ale.getMinimalActionSet()
+        if all_actions:
+            self.min_action_set = ale.getLegalActionSet()
+        else:
+            self.min_action_set = ale.getMinimalActionSet()
         self.resized_width = resized_width
         self.resized_height = resized_height
         self.resize_method = resize_method
@@ -42,6 +46,7 @@ class ALEExperiment(object):
         self.terminal_lol = False  # Most recent episode ended on a loss of life
         self.max_start_nullops = max_start_nullops
         self.rng = rng
+        self.display_screen = display_screen
 
     def run(self):
         """
@@ -49,7 +54,9 @@ class ALEExperiment(object):
         is conducted after each training epoch.
         """
 
-        self.agent.initialize(self.ale.getMinimalActionSet())
+        self.agent.initialize(self.min_action_set)
+        if self.display_screen:
+            self.vis = VisualInterface(self.agent.network, self.agent.test_data_set)
 
         for epoch in range(1, self.num_epochs + 1):
             self.agent.start_epoch(epoch)
@@ -173,6 +180,8 @@ class ALEExperiment(object):
                 break
 
             action = self.agent.step(reward, self.get_observation())
+            if testing and self.display_screen:
+                self.vis.draw(num_steps, self.ale.getScreenRGB())
 
 
         return terminal, num_steps, episode_reward

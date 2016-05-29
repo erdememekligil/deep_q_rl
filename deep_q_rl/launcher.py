@@ -8,10 +8,10 @@ from inspect import ismethod
 import os
 import argparse
 import logging
-import ale_python_interface
 import numpy as np
 import theano
 import ale_experiment
+from deep_q_rl.libs import ale_python_interface
 
 
 def convert_bool_arg(params, param_name):
@@ -149,6 +149,8 @@ def process_args(args, defaults, description):
                         type=str, default=defaults.cudnn_deterministic,
                         help=('Whether to use deterministic backprop. ' +
                               '(default: %(default)s)'))
+    parser.add_argument('--all-actions', dest="all_actions", action='store_true', default=False,
+                        help='If true, all possible 17 actions will be used.')
 
     params = parser.parse_args(args, defaults)
     if params.experiment_prefix is None:
@@ -205,7 +207,7 @@ def launch(args, defaults, description):
             pygame.init()
             ale.setBool('sound', False) # Sound doesn't work on OSX
 
-    ale.setBool('display_screen', params.display_screen)
+    ale.setBool('display_screen', False)
     ale.setFloat('repeat_action_probability',
                  params.repeat_action_probability)
 
@@ -228,7 +230,9 @@ def launch(args, defaults, description):
         frame_skip=params.frame_skip,
         death_ends_episode=params.death_ends_episode,
         max_start_nullops=params.max_start_nullops,
-        rng=params.rng)
+        rng=params.rng,
+        display_screen=params.display_screen,
+        all_actions=params.all_actions)
 
     experiment.run()
 
