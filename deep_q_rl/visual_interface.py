@@ -261,7 +261,7 @@ class VisualInterface(object):
         height = int(four_img[0].shape[1]*4 * self.ratio_h)
         self.screen.blit(pygame.transform.scale(surf, (width, height)), (0, self.general_offset_y))
 
-        greyscale = self.to_RGB_greyscale(four_img[3])
+        greyscale = self.to_RGB_greyscale(four_img[four_img.shape[0]-1])
         surf = self.create_surface(greyscale)
 
         width = int(surf.get_width()*4 * self.ratio_w)
@@ -354,7 +354,7 @@ class VisualInterface(object):
         return f
 
     def set_shared_var(self, state, network):
-        states = np.zeros((32, 4, 84, 84), dtype=theano.config.floatX)
+        states = np.zeros(self.q_layers[0].shape, dtype=theano.config.floatX)
         states[0, ...] = state
         network.states_shared.set_value(states)
 

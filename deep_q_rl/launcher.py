@@ -12,7 +12,9 @@ import numpy as np
 import theano
 import ale_experiment
 from deep_q_rl.libs import ale_python_interface
-
+from deep_q_rl.maze import maze_generator
+import os.path
+import json
 
 def convert_bool_arg(params, param_name):
     """Unfortunately, argparse doesn't handle converting strings to
@@ -152,6 +154,25 @@ def process_args(args, defaults, description):
     parser.add_argument('--all-actions', dest="all_actions", action='store_true', default=False,
                         help='If true, all possible 17 actions will be used.')
 
+    if hasattr(defaults, 'maze_type'):
+        parser.add_argument('--maze-size', dest="maze_size",
+                            type=int, default=defaults.maze_size,
+                            help='(Height, Width) of maze. (default: %(default)s)')
+        parser.add_argument('--maze-target', dest="maze_target",
+                            type=int, default=defaults.maze_target,
+                            help='(x, y) of maze target. (default: %(default)s)')
+        parser.add_argument('--maze-init', dest="maze_init",
+                            type=int, default=defaults.maze_init,
+                            help='(x, y) of maze agent initial position. (default: %(default)s)')
+        parser.add_argument('--maze-type', dest="maze_type",
+                            type=str, default=defaults.maze_type,
+                            help='Type of maze. (default: %(default)s)')
+
+    params = parser.parse_args(args)
+    if params.experiment_prefix is None:
+        name = os.path.splitext(os.path.basename(params.rom))[0]
+        params.experiment_prefix = name
+    arguments = get_formatted_arg(defaults, params)
     params = parser.parse_args(args, defaults)
     if params.experiment_prefix is None:
         name = os.path.splitext(os.path.basename(params.rom))[0]
@@ -172,7 +193,41 @@ def process_args(args, defaults, description):
         params.freeze_interval = (params.freeze_interval //
                                   params.update_frequency)
 
+    # read from json file and change default (those are coming from run_.py)
+    # if any --arg is set, those are not changed.
+    if params.nn_file is not None:
+        parentDir = os.path.abspath(os.path.join(params.nn_file, os.pardir))
+        jsonFileDir = os.path.join(parentDir, 'params.json')
+        try:
+            with open(jsonFileDir) as data_file:
+                data = json.load(data_file)
+                for attr, value in params.__dict__.iteritems():
+                    if attr in data and value != data[attr] and attr not in arguments:
+                        logging.info("Chaning param {} \t {} -> {}".format(attr, value, data[attr]))
+                        setattr(params, attr, data[attr])
+        except:
+            logging.info("Cannot load params.json file")
+
     return params
+
+def get_formatted_arg(defaults, params):
+    """
+    Get args in object format.
+    """
+    diff = {}
+    for attr, value in defaults.__dict__.iteritems():
+        if not hasattr(params, attr):
+            continue
+
+        if attr.startswith("__") and attr.endswith("__"):
+            continue
+
+        args_val = getattr(params, attr)
+
+        if value != args_val:
+            logging.info("User arg {} \t {}".format(attr, args_val))
+            diff[attr] = args_val
+    return diff
 
 
 def launch(args, defaults, description):
@@ -183,12 +238,6 @@ def launch(args, defaults, description):
     logging.basicConfig(level=logging.INFO)
     params = process_args(args, defaults, description)
 
-    if params.rom.endswith('.bin'):
-        rom = params.rom
-    else:
-        rom = "%s.bin" % params.rom
-    full_rom_path = os.path.join(defaults.base_rom_path, rom)
-
     if params.deterministic:
         params.rng = np.random.RandomState(123456)
     else:
@@ -197,26 +246,36 @@ def launch(args, defaults, description):
     if params.cudnn_deterministic:
         theano.config.dnn.conv.algo_bwd = 'deterministic'
 
-    ale = ale_python_interface.ALEInterface()
-    ale.setInt('random_seed', params.rng.randint(1000))
+    if params.rom.startswith("maze"):
+        ale = maze_generator.MazeGenerator(params.maze_type, params.maze_size, params.maze_init, params.maze_target)
+    else:
+        if params.rom.endswith('.bin'):
+            rom = params.rom
+        else:
+            rom = "%s.bin" % params.rom
+        full_rom_path = os.path.join(defaults.base_rom_path, rom)
 
-    if params.display_screen:
-        import sys
-        if sys.platform == 'darwin':
-            import pygame
-            pygame.init()
-            ale.setBool('sound', False) # Sound doesn't work on OSX
+        ale = ale_python_interface.ALEInterface()
+        ale.setInt('random_seed', params.rng.randint(1000))
 
-    ale.setBool('display_screen', False)
-    ale.setFloat('repeat_action_probability',
-                 params.repeat_action_probability)
+        if params.display_screen:
+            import sys
+            if sys.platform == 'darwin':
+                import pygame
+                pygame.init()
+                ale.setBool('sound', False) # Sound doesn't work on OSX
 
-    ale.loadROM(full_rom_path)
+        ale.setBool('display_screen', False)
+        ale.setFloat('repeat_action_probability',
+                     params.repeat_action_probability)
+
+        ale.loadROM(full_rom_path)
 
     if params.agent_type is None:
         raise Exception("The agent type has not been specified")
 
     agent = params.agent_type(params)
+
 
     experiment = ale_experiment.ALEExperiment(
         ale=ale,

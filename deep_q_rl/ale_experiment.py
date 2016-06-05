@@ -56,7 +56,7 @@ class ALEExperiment(object):
 
         self.agent.initialize(self.min_action_set)
         if self.display_screen:
-            self.vis = VisualInterface(self.agent.network, self.agent.test_data_set)
+            self.vis = VisualInterface(self.agent.network, self.agent.data_set)
 
         for epoch in range(1, self.num_epochs + 1):
             self.agent.start_epoch(epoch)
@@ -100,9 +100,13 @@ class ALEExperiment(object):
             total_time = t - episode_start_time
 
             steps_left -= num_steps
+            if episode_time == 0:
+                steps_sec = num_steps
+            else:
+                steps_sec = num_steps / episode_time
 
             logging.info("{} episode {} of epoch {} completed with reward {} in {:.1f} sec. Total time: {:.1f}. Epoch avg reward: {:.2f}. Steps: {}/{}. Steps/sec: {:.2f}".format(
-                    prefix, episode, epoch, episode_reward, episode_time, total_time, epoch_avg_reward, total_steps - steps_left, total_steps, num_steps / episode_time))
+                    prefix, episode, epoch, episode_reward, episode_time, total_time, epoch_avg_reward, total_steps - steps_left, total_steps, steps_sec))
 
     def _init_episode(self):
         """ This method resets the game if needed, performs enough null
@@ -132,7 +136,7 @@ class ALEExperiment(object):
         reward = self.ale.act(action)
         index = self.buffer_count % self.buffer_length
 
-        self.ale.getScreenGrayscale(self.screen_buffer[index, ...])
+        self.screen_buffer[index, ...] = self.ale.getScreenGrayscale(self.screen_buffer[index, ...])
 
         self.buffer_count += 1
         return reward
@@ -180,7 +184,11 @@ class ALEExperiment(object):
                 break
 
             action = self.agent.step(reward, self.get_observation())
-            if testing and self.display_screen:
+            if self.display_screen:
+                if testing:
+                    self.vis.data_set = self.agent.test_data_set
+                else:
+                    self.vis.data_set = self.agent.data_set
                 self.vis.draw(num_steps, self.ale.getScreenRGB())
 
 
@@ -193,7 +201,7 @@ class ALEExperiment(object):
         index = self.buffer_count % self.buffer_length - 1
         max_image = np.maximum(self.screen_buffer[index, ...],
                                self.screen_buffer[index - 1, ...])
-        return self.resize_image(max_image)
+        return self.resize_image(self.screen_buffer[index, ...])
 
     def resize_image(self, image):
         """ Appropriately resize a single image """
@@ -217,5 +225,9 @@ class ALEExperiment(object):
             return cv2.resize(image,
                               (self.resized_width, self.resized_height),
                               interpolation=cv2.INTER_LINEAR)
+        elif self.resize_method == 'scale_nearest':
+            return cv2.resize(image,
+                              (self.resized_width, self.resized_height),
+                              interpolation=cv2.INTER_NEAREST)
         else:
             raise ValueError('Unrecognized image resize method.')

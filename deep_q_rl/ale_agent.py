@@ -110,7 +110,7 @@ class NeuralAgent(AgentBase):
         # CREATE A FOLDER TO HOLD RESULTS
         # this is now just exp_pref + timestamp. params are in params.json
         time_str = datetime.datetime.now().strftime("_%m-%d-%H%M_%S_%f")
-        export_dir = self.exp_pref + time_str
+        export_dir = os.path.join('results', self.exp_pref) + time_str
         try:
             os.stat(export_dir)
         except OSError:
