@@ -122,7 +122,7 @@ class NeuralAgent(AgentBase):
         self.params_file = open(self.export_dir + '/params.json', 'w')
         param_dict = {k:v for k, v in self.params.__dict__.items() \
                       if "__" not in k \
-                      and isinstance(v, (int, float, str, bool))}
+                      and isinstance(v, (int, float, str, bool, tuple))}
         json.dump(param_dict, self.params_file, indent=4)
         self.params_file.close()
 
@@ -139,6 +139,7 @@ class NeuralAgent(AgentBase):
         self.learning_file = open(self.export_dir + '/learning.csv', 'w', 0)
         self.learning_file.write('mean_loss,epsilon\n')
         self.learning_file.flush()
+        self.learning_file.close()
 
     def _update_results_file(self, epoch, num_episodes, holdout_sum):
         logging.info("OPENING " + self.export_dir + '/results.csv')
@@ -153,10 +154,11 @@ class NeuralAgent(AgentBase):
         self.results_file.close()
 
     def _update_learning_file(self):
-        out = "{},{}\n".format(np.mean(self.loss_averages),
-                               self.epsilon)
+        self.learning_file = open(self.export_dir + '/learning.csv', 'a', 0)
+        out = "{},{}\n".format(np.mean(self.loss_averages), self.epsilon)
         self.learning_file.write(out)
         self.learning_file.flush()
+        self.learning_file.close()
 
     def _persist_network(self, network_filename):
         full_filename = os.path.join(self.export_dir, network_filename)

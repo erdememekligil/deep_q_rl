@@ -19,7 +19,7 @@ class Parameters:
     # Experiment Parameters
     # ----------------------
     steps_per_epoch = 250000
-    epochs = 200
+    epochs = 500
     steps_per_test = 125000
 
     # ----------------------
@@ -27,6 +27,7 @@ class Parameters:
     # ----------------------
     base_rom_path = "../roms/"
     rom = 'breakout.bin'
+    all_actions = False
     frame_skip = 4
     repeat_action_probability = 0
 
@@ -35,7 +36,7 @@ class Parameters:
     # ----------------------
     update_rule = 'deepmind_rmsprop'
     batch_accumulator = 'sum'
-    learning_rate = .00025
+    learning_rate = .00015
     discount = .99
     rms_decay = .95 # (Rho)
     rms_epsilon = .01
@@ -48,7 +49,7 @@ class Parameters:
     clip_delta = 1.0
     epsilon_start = 1.0
     epsilon_min = .1
-    epsilon_decay = 1000000
+    epsilon_decay = 250000 * 160
     phi_length = 4
     update_frequency = 4
     replay_memory_size = 1000000
@@ -64,6 +65,7 @@ class Parameters:
     max_start_nullops = 30
     deterministic = 'true'
     cudnn_deterministic = 'false'
+    display_screen = False
 
     agent_type = NeuralAgent
     qlearner_type = DeepQLearner

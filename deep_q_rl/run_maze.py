@@ -37,7 +37,7 @@ class Parameters:
     # ----------------------
     update_rule = 'deepmind_rmsprop'
     batch_accumulator = 'sum'
-    learning_rate = .00025
+    learning_rate = .00015
     discount = .99
     rms_decay = .95 # (Rho)
     rms_epsilon = .01
@@ -50,9 +50,9 @@ class Parameters:
     clip_delta = 1.0
     epsilon_start = 1.0
     epsilon_min = .1
-    epsilon_decay = 4000000
+    epsilon_decay = 300 * 250000
     phi_length = 4
-    update_frequency = 1
+    update_frequency = 4
     replay_memory_size = 1000000
     batch_size = 32
     network_type = "nature_dnn"
@@ -73,9 +73,29 @@ class Parameters:
 
     # maze_type = 'maze_complex_01_pre'
     maze_type = 'maze_empty'
+    # maze_size = (16, 16)
+    # maze_target = (14, 14)
+    maze_init = (1, 1)
+
+    # maze_size = (8, 8)
+    # maze_target = (6, 6)
+
+    # maze_size = (12, 12)
+    # maze_target = (10, 10)
+
+    # maze_size = (10, 10)
+    # maze_target = (8, 8)
+
+    # maze_size = (16, 16)
+    # maze_target = (12, 12)
+
+    # maze_size = (18, 18)
+    # maze_target = (16, 16)
+
     maze_size = (21, 21)
     maze_target = (19, 19)
-    maze_init = (1, 1)
+    random_maze_agent = True
+    random_maze_target = True
 
 if __name__ == "__main__":
     launcher.launch(sys.argv[1:], Parameters, __doc__)

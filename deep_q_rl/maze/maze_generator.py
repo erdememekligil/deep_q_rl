@@ -13,12 +13,16 @@ WHITE = 255
 PLAYER = 170
 TARGET = 85
 BLACK = 0
+WALL = WHITE
+EMPTY_SPACE = BLACK
 
 MAZE_PICKLE_FOLDER = 'maze'
 
-class MazeGenerator(MazeInterface):
 
-    def __init__(self, maze_type="maze_empty", maze_size=(21, 21), maze_init=(1, 1), maze_target=(20, 20)):
+class MazeGenerator(MazeInterface):
+    
+    def __init__(self, maze_type="maze_empty", maze_size=(21, 21), maze_init=(1, 1), maze_target=(19, 19),
+                 random_maze_agent=False, random_maze_target=False):
         super(MazeGenerator, self).__init__()
         self.maze_type = maze_type
         self.height = maze_size[0]
@@ -26,6 +30,8 @@ class MazeGenerator(MazeInterface):
         self.initial_pos = maze_init
         self.agent_pos = self.initial_pos
         self.target_pos = maze_target
+        self.random_maze_target = random_maze_target
+        self.random_maze_agent = random_maze_agent
 
         file_name = maze_type + '.maze'
         file_name = os.path.join(MAZE_PICKLE_FOLDER, file_name)
@@ -59,7 +65,7 @@ class MazeGenerator(MazeInterface):
     def act(self, action_index):
         action = maze_actions.get_action(action_index).value
         next_pos = tuple(map(operator.add, self.agent_pos, action))
-        if self.maze[next_pos[1]][next_pos[0]] != BLACK:
+        if self.maze[next_pos[1]][next_pos[0]] != WALL:
             self.agent_pos = next_pos
         if self.agent_pos == self.target_pos:
             return 100
@@ -67,7 +73,21 @@ class MazeGenerator(MazeInterface):
             return 0
 
     def reset_game(self):
-        self.agent_pos = self.initial_pos
+        if self.random_maze_agent:
+            self.agent_pos = self.generate_random_position()
+        else:
+            self.agent_pos = self.initial_pos
+
+        if self.random_maze_target:
+            random_pos = self.generate_random_position()
+            while random_pos == self.agent_pos:
+                random_pos = self.generate_random_position()
+            self.target_pos = random_pos
+
+    def generate_random_position(self):
+        x = np.random.randint(1, self.width - 1) # -1 for the wall
+        y = np.random.randint(1, self.height - 1) # -1 for the watch
+        return x, y
 
     def game_over(self):
         if self.agent_pos == self.target_pos:
@@ -95,11 +115,11 @@ class MazeGenerator(MazeInterface):
     def generate_maze(self, complexity=.75, density=.75):
 
         if self.maze_type == "maze_empty":
-            Z = np.ones((self.height, self.width), np.uint8) * WHITE
-            Z[0, 0:self.width] = BLACK
-            Z[self.height-1, 0:self.width] = BLACK
-            Z[0:self.height, 0] = BLACK
-            Z[0:self.height, self.width-1] = BLACK
+            Z = np.ones((self.height, self.width), np.uint8) * EMPTY_SPACE
+            Z[0, 0:self.width] = WALL
+            Z[self.height-1, 0:self.width] = WALL
+            Z[0:self.height, 0] = WALL
+            Z[0:self.height, self.width-1] = WALL
 
             return Z
         else:
@@ -109,14 +129,14 @@ class MazeGenerator(MazeInterface):
             complexity = int(complexity * (5 * (shape[0] + shape[1])))
             density    = int(density * ((shape[0] // 2) * (shape[1] // 2)))
             # Build actual maze
-            Z = np.ones(shape, dtype=np.uint8) * WHITE
+            Z = np.ones(shape, dtype=np.uint8) * EMPTY_SPACE
             # Fill borders
-            Z[0, :] = Z[-1, :] = BLACK
-            Z[:, 0] = Z[:, -1] = BLACK
+            Z[0, :] = Z[-1, :] = WALL
+            Z[:, 0] = Z[:, -1] = WALL
             # Make aisles
             for i in range(density):
                 x, y = rand(0, shape[1] // 2) * 2, rand(0, shape[0] // 2) * 2
-                Z[y, x] = BLACK
+                Z[y, x] = WALL
                 for j in range(complexity):
                     neighbours = []
                     if x > 1:
@@ -129,9 +149,9 @@ class MazeGenerator(MazeInterface):
                         neighbours.append((y + 2, x))
                     if len(neighbours):
                         y_, x_ = neighbours[rand(0, len(neighbours) - 1)]
-                        if Z[y_, x_] == WHITE:
-                            Z[y_, x_] = BLACK
-                            Z[y_ + (y - y_) // 2, x_ + (x - x_) // 2] = BLACK
+                        if Z[y_, x_] == EMPTY_SPACE:
+                            Z[y_, x_] = WALL
+                            Z[y_ + (y - y_) // 2, x_ + (x - x_) // 2] = WALL
                             x, y = x_, y_
             return Z
 

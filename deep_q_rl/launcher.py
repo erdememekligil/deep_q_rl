@@ -9,6 +9,7 @@ import os
 import argparse
 import logging
 import numpy as np
+import sys
 import theano
 import ale_experiment
 from deep_q_rl.libs import ale_python_interface
@@ -156,27 +157,29 @@ def process_args(args, defaults, description):
 
     if hasattr(defaults, 'maze_type'):
         parser.add_argument('--maze-size', dest="maze_size",
-                            type=int, default=defaults.maze_size,
+                            type=tuple, default=defaults.maze_size,
                             help='(Height, Width) of maze. (default: %(default)s)')
         parser.add_argument('--maze-target', dest="maze_target",
-                            type=int, default=defaults.maze_target,
+                            type=tuple, default=defaults.maze_target,
                             help='(x, y) of maze target. (default: %(default)s)')
         parser.add_argument('--maze-init', dest="maze_init",
-                            type=int, default=defaults.maze_init,
+                            type=tuple, default=defaults.maze_init,
                             help='(x, y) of maze agent initial position. (default: %(default)s)')
         parser.add_argument('--maze-type', dest="maze_type",
                             type=str, default=defaults.maze_type,
                             help='Type of maze. (default: %(default)s)')
+        parser.add_argument('--random-maze-agent', dest="random_maze_agent",
+                            default=defaults.random_maze_agent,
+                            help=('If true agent will have random pos each episode (default: %(default)s)'))
+        parser.add_argument('--random-maze-target', dest="random_maze_target",
+                            default=defaults.random_maze_target,
+                            help=('If true target will have random pos each episode (default: %(default)s)'))
 
     params = parser.parse_args(args)
-    if params.experiment_prefix is None:
-        name = os.path.splitext(os.path.basename(params.rom))[0]
-        params.experiment_prefix = name
+    extract_prefix(params)
     arguments = get_formatted_arg(defaults, params)
     params = parser.parse_args(args, defaults)
-    if params.experiment_prefix is None:
-        name = os.path.splitext(os.path.basename(params.rom))[0]
-        params.experiment_prefix = name
+    extract_prefix(params)
 
 
     convert_bool_arg(params, 'death_ends_episode')
@@ -204,11 +207,21 @@ def process_args(args, defaults, description):
                 for attr, value in params.__dict__.iteritems():
                     if attr in data and value != data[attr] and attr not in arguments:
                         logging.info("Chaning param {} \t {} -> {}".format(attr, value, data[attr]))
-                        setattr(params, attr, data[attr])
-        except:
-            logging.info("Cannot load params.json file")
+                        if type(data[attr]) == list:
+                            setattr(params, attr, tuple(data[attr]))
+                        else:
+                            setattr(params, attr, data[attr])
+        except Exception as ex:
+            logging.error("Cannot load params.json file. {}".format(ex))
 
     return params
+
+
+def extract_prefix(params):
+    if params.experiment_prefix is None:
+        name = os.path.splitext(os.path.basename(params.rom))[0]
+        params.experiment_prefix = name
+
 
 def get_formatted_arg(defaults, params):
     """
@@ -227,6 +240,9 @@ def get_formatted_arg(defaults, params):
         if value != args_val:
             logging.info("User arg {} \t {}".format(attr, args_val))
             diff[attr] = args_val
+
+    if diff.has_key("rom"):
+        diff["experiment_prefix"] = diff["rom"]
     return diff
 
 
@@ -247,7 +263,8 @@ def launch(args, defaults, description):
         theano.config.dnn.conv.algo_bwd = 'deterministic'
 
     if params.rom.startswith("maze"):
-        ale = maze_generator.MazeGenerator(params.maze_type, params.maze_size, params.maze_init, params.maze_target)
+        ale = maze_generator.MazeGenerator(params.maze_type, params.maze_size, params.maze_init, params.maze_target,
+                                           params.random_maze_agent, params.random_maze_target)
     else:
         if params.rom.endswith('.bin'):
             rom = params.rom

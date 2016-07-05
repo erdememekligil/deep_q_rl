@@ -235,8 +235,23 @@ class DeepQLearner(QLearner):
                         self.update_counter % self.freeze_interval == 0):
             self._reset_q_hat()
         loss, _ = self._train()
+        # self.avg_first_layer()
         self.update_counter += 1
         return np.sqrt(loss)
+
+    def avg_first_layer(self):
+        q_layers = lasagne.layers.get_all_layers(self.l_out)
+        w1 = q_layers[1].W.get_value()
+
+        for i in range(0,len(w1)):
+            kernel = w1[i]
+            avg_w = np.zeros(kernel[0].shape, kernel[0].dtype)
+            for j in range(0, len(kernel)):
+                avg_w += kernel[j]
+            avg_w /= 4
+            w1[i, :] = avg_w
+        q_layers[1].W.set_value(w1)
+        print("first layer shared")
 
     def q_vals(self, state):
         states = np.zeros((self.batch_size, self.num_frames, self.input_height,
