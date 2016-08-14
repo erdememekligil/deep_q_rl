@@ -2,3 +2,10 @@
 roms
 utils
 data
+*.pkl
+.idea/
+*.csv
+params.json
+*.jpg
+*.gz
+deep_q_rl/results/breakout_04-07-0008_00_717000/LegalActionSet

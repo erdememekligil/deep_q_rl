@@ -19,7 +19,7 @@ class Parameters:
     # Experiment Parameters
     # ----------------------
     steps_per_epoch = 250000
-    epochs = 500
+    epochs = 2000
     steps_per_test = 125000
 
     # ----------------------
@@ -27,7 +27,7 @@ class Parameters:
     # ----------------------
     base_rom_path = "../roms/"
     # rom = "maze_complex"
-    rom = "maze_empty"
+    rom = "maze_two_wall"
     all_actions = False
     frame_skip = 1
     repeat_action_probability = 0
@@ -37,7 +37,7 @@ class Parameters:
     # ----------------------
     update_rule = 'deepmind_rmsprop'
     batch_accumulator = 'sum'
-    learning_rate = .00015
+    learning_rate = .00025
     discount = .99
     rms_decay = .95 # (Rho)
     rms_epsilon = .01
@@ -50,7 +50,7 @@ class Parameters:
     clip_delta = 1.0
     epsilon_start = 1.0
     epsilon_min = .1
-    epsilon_decay = 300 * 250000
+    epsilon_decay = 300 * steps_per_epoch
     phi_length = 4
     update_frequency = 4
     replay_memory_size = 1000000
@@ -72,11 +72,11 @@ class Parameters:
     qlearner_type = DeepQLearner
 
     # maze_type = 'maze_complex_01_pre'
-    maze_type = 'maze_empty'
+    maze_type = 'maze_two_wall'
     # maze_size = (16, 16)
     # maze_target = (14, 14)
     maze_init = (1, 1)
-
+    #
     # maze_size = (8, 8)
     # maze_target = (6, 6)
 
@@ -85,17 +85,19 @@ class Parameters:
 
     # maze_size = (10, 10)
     # maze_target = (8, 8)
-
+    # #
     # maze_size = (16, 16)
-    # maze_target = (12, 12)
+    # maze_target = (14, 14)
 
     # maze_size = (18, 18)
     # maze_target = (16, 16)
-
+    #
     maze_size = (21, 21)
     maze_target = (19, 19)
     random_maze_agent = True
     random_maze_target = True
+
+    maze_max_action_count = (maze_size[0]+maze_size[1])*10
 
 if __name__ == "__main__":
     launcher.launch(sys.argv[1:], Parameters, __doc__)

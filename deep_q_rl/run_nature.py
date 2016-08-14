@@ -19,7 +19,7 @@ class Parameters:
     # Experiment Parameters
     # ----------------------
     steps_per_epoch = 250000
-    epochs = 500
+    epochs = 2000
     steps_per_test = 125000
 
     # ----------------------
@@ -36,7 +36,7 @@ class Parameters:
     # ----------------------
     update_rule = 'deepmind_rmsprop'
     batch_accumulator = 'sum'
-    learning_rate = .00015
+    learning_rate = .00025
     discount = .99
     rms_decay = .95 # (Rho)
     rms_epsilon = .01
@@ -49,7 +49,7 @@ class Parameters:
     clip_delta = 1.0
     epsilon_start = 1.0
     epsilon_min = .1
-    epsilon_decay = 250000 * 160
+    epsilon_decay = 250000 * 75
     phi_length = 4
     update_frequency = 4
     replay_memory_size = 1000000
