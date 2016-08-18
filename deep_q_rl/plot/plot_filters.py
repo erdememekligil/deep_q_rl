@@ -13,9 +13,9 @@ import sys
 import matplotlib.pyplot as plt
 import cPickle
 import lasagne.layers
-from run_nature import Parameters
-from q_network import DeepQLearner
-import q_learner
+from deep_q_rl.run_nature import Parameters
+from deep_q_rl.q_network import DeepQLearner
+import deep_q_rl.q_learner
 from lasagne.layers import dnn
 
 

@@ -177,6 +177,9 @@ def process_args(args, defaults, description):
         parser.add_argument('--maze-max-action-count', dest="maze_max_action_count",
                             type=int, default=defaults.maze_max_action_count,
                             help=('If action count exceeds this, the episode will be over (default: %(default)s)'))
+        parser.add_argument('--maze-enemy-count', dest="maze_enemy_count",
+                            type=int, default=defaults.maze_enemy_count,
+                            help=('Enemy point count (default: %(default)s)'))
 
 
     params = parser.parse_args(args)
@@ -269,7 +272,7 @@ def launch(args, defaults, description):
     if params.rom.startswith("maze"):
         ale = maze_generator.MazeGenerator(params.maze_type, params.maze_size, params.maze_init, params.maze_target,
                                            params.random_maze_agent, params.random_maze_target,
-                                           params.maze_max_action_count)
+                                           params.maze_max_action_count, params.maze_enemy_count)
     else:
         if params.rom.endswith('.bin'):
             rom = params.rom
