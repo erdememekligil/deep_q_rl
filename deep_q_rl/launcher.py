@@ -148,6 +148,9 @@ def process_args(args, defaults, description):
                         type=str, default=defaults.deterministic,
                         help=('Whether to use deterministic parameters ' +
                               'for learning. (default: %(default)s)'))
+    parser.add_argument('--random-seed', dest="random_seed",
+                        type=int, default=defaults.random_seed,
+                        help=('Random seed value (default: %(default)s)'))
     parser.add_argument('--cudnn_deterministic', dest="cudnn_deterministic",
                         type=str, default=defaults.cudnn_deterministic,
                         help=('Whether to use deterministic backprop. ' +
@@ -267,18 +270,19 @@ def launch(args, defaults, description):
     params = process_args(args, defaults, description)
 
     if params.deterministic:
-        params.rng = np.random.RandomState(123456)
+        params.rng = np.random.RandomState(params.random_seed)
     else:
         params.rng = np.random.RandomState()
 
     if params.cudnn_deterministic:
-        theano.config.dnn.conv.algo_bwd = 'deterministic'
+        theano.config.dnn.conv.algo_bwd_filter = 'deterministic'
+        theano.config.dnn.conv.algo_bwd_data = 'deterministic'
 
     if params.rom.startswith("maze"):
         ale = maze_generator.MazeGenerator(params.maze_type, params.maze_size, params.maze_init, params.maze_target,
                                            params.random_maze_agent, params.random_maze_target,
                                            params.maze_max_action_count, params.maze_enemy_count,
-                                           params.maze_gate_reward_size, params.maze_force_opposite_sides)
+                                           params.maze_gate_reward_size, params.maze_force_opposite_sides, params.rng)
     else:
         if params.rom.endswith('.bin'):
             rom = params.rom

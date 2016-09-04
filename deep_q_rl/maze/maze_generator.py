@@ -26,7 +26,7 @@ class MazeGenerator(MazeInterface):
     
     def __init__(self, maze_type="maze_empty", maze_size=(21, 21), maze_init=(1, 1), maze_target=(19, 19),
                  random_maze_agent=False, random_maze_target=False, max_action_count=400, enemy_count=0,
-                 maze_gate_reward_size=0, maze_force_opposite_sides=False):
+                 maze_gate_reward_size=0, maze_force_opposite_sides=False, rng=np.random.RandomState()):
         super(MazeGenerator, self).__init__()
         self.maze_type = maze_type
         self.height = maze_size[0]
@@ -45,7 +45,8 @@ class MazeGenerator(MazeInterface):
         self.gate_rewards = []
         self.areas = []
         self.reward_given = 0
-        self.force_opposite_sides = maze_gate_reward_size
+        self.force_opposite_sides = maze_force_opposite_sides
+        self.rng = rng
 
         file_name = maze_type + '.maze'
         file_name = os.path.join(MAZE_PICKLE_FOLDER, file_name)
@@ -117,6 +118,7 @@ class MazeGenerator(MazeInterface):
         else:
             return 0
 
+    # Returns true if agent hit the gate reward, and removes the gate reward.
     def check_gate_reward(self):
         if self.gate_reward_size == 0:
             return False
@@ -153,9 +155,10 @@ class MazeGenerator(MazeInterface):
         # generate target
         if self.random_maze_target:
             self.target_pos = self.generate_random_position_without_wall()
-            while self.target_pos == self.agent_pos or not self.check_opposite_sides():
+            while self.target_pos == self.agent_pos or (self.force_opposite_sides and not self.check_opposite_sides()):
                 self.target_pos = self.generate_random_position_without_wall()
 
+        # generate enemies.
         self.enemies = []
         for i in range(0, self.enemy_count):
             enemy = self.generate_random_position_without_wall()
@@ -163,22 +166,13 @@ class MazeGenerator(MazeInterface):
                 enemy = self.generate_random_position_without_wall()
             self.enemies.append(enemy)
 
-        # self.enemies = []
-        # self.enemies.append((3,1))
-        # self.enemies.append((3,2))
-        # self.enemies.append((3,3))
-        # self.enemies.append((3,4))
-        # self.agent_pos = (1,1)
-        # self.target_pos = (self.width - 2, 1)
-
-        # self.agent_pos = (1,self.height - 2)
-
         self.action_count = 0
         self.reward_given = 0
 
+    # returns false if both agent and target are in same area.
     def check_opposite_sides(self):
         if len(self.areas) <= 1:
-            return False
+            return True
         for a in self.areas:
             if self.agent_pos in a and self.target_pos in a:
                 return False
@@ -218,8 +212,8 @@ class MazeGenerator(MazeInterface):
         return random_pos
 
     def generate_random_position(self):
-        x = np.random.randint(1, self.width - 1) # -1 for the wall
-        y = np.random.randint(1, self.height - 1) # -1 for the watch
+        x = self.rng.randint(1, self.width - 1) # -1 for the wall
+        y = self.rng.randint(1, self.height - 1) # -1 for the watch
         return x, y
 
     def game_over(self):
@@ -276,12 +270,12 @@ class MazeGenerator(MazeInterface):
     def generate_maze_one_wall(self):
         Z = self.generate_maze_empty()
 
-        r = np.random.randint(0, 2)  # 0 or 1
+        r = self.rng.randint(0, 2)  # 0 or 1
         y = Z.shape[0] / 2
         x = Z.shape[1] / 2
         if r == 1:
             Z[0:self.height, y] = WALL
-            r = np.random.randint(1, self.height-1)
+            r = self.rng.randint(1, self.height-1)
             Z[r, y] = EMPTY_SPACE
             self.gates.append((y, r))
             self.append_rect_area((1, 1), (y, self.width-1))
@@ -290,7 +284,7 @@ class MazeGenerator(MazeInterface):
             # self.append_rect_area((1, y+1), (self.width-1, self.height-1))
         else:
             Z[x, 0:self.width] = WALL
-            r = np.random.randint(1, self.width-1)
+            r = self.rng.randint(1, self.width-1)
             Z[x, r] = EMPTY_SPACE
             self.gates.append((r, x))
             self.append_rect_area((1, 1), (self.height-1, x))
@@ -309,35 +303,35 @@ class MazeGenerator(MazeInterface):
     def generate_maze_two_wall(self):
         Z = self.generate_maze_empty()
 
-        r = np.random.randint(0, 2)  # 0 or 1
+        r = self.rng.randint(0, 2)  # 0 or 1
         y = Z.shape[0] / 2
         x = Z.shape[1] / 2
         Z[x, 0:self.width] = WALL
         Z[0:self.height, y] = WALL
         if r == 1:
-            r = np.random.randint(1, x-1)
+            r = self.rng.randint(1, x-1)
             Z[r, y] = EMPTY_SPACE
             self.gates.append((y, r))
-            r = np.random.randint(x+1, self.height-1)
+            r = self.rng.randint(x+1, self.height-1)
             Z[r, y] = EMPTY_SPACE
             self.gates.append((y, r))
 
-            r = np.random.randint(1, self.width-1)
+            r = self.rng.randint(1, self.width-1)
             while r == y:
-                r = np.random.randint(1, self.width-1)
+                r = self.rng.randint(1, self.width-1)
             Z[x, r] = EMPTY_SPACE
             self.gates.append((r, x))
         else:
-            r = np.random.randint(1, y-1)
+            r = self.rng.randint(1, y-1)
             Z[x, r] = EMPTY_SPACE
             self.gates.append((r, x))
-            r = np.random.randint(y+1, self.width-1)
+            r = self.rng.randint(y+1, self.width-1)
             Z[x, r] = EMPTY_SPACE
             self.gates.append((r, x))
 
-            r = np.random.randint(1, self.height-1)
+            r = self.rng.randint(1, self.height-1)
             while r == x:
-                r = np.random.randint(1, self.height-1)
+                r = self.rng.randint(1, self.height-1)
             Z[r, y] = EMPTY_SPACE
             self.gates.append((y, r))
         return Z
@@ -376,10 +370,10 @@ class MazeGenerator(MazeInterface):
         return Z
 
 if __name__ == "__main__":
-    m = MazeGenerator("maze_one_wall", maze_size=(12, 12), maze_target=(10, 10), random_maze_agent=True, random_maze_target=True, enemy_count=0, maze_force_opposite_sides=True, maze_gate_reward_size=2)
+    m = MazeGenerator("maze_one_wall", maze_size=(12, 12), maze_target=(10, 10), random_maze_agent=True, random_maze_target=True, enemy_count=0, maze_force_opposite_sides=False, maze_gate_reward_size=2, rng=np.random.RandomState())
     m.reset_game()
     i = 0
-    while(not m.game_over() and i < 500):
+    while(not m.game_over() and i < 0):
         action = rand(0,3)
         prev = m.agent_pos
         r = m.act(action)

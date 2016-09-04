@@ -27,8 +27,8 @@ class Parameters:
     # ----------------------
     base_rom_path = "../roms/"
     # rom = "maze_complex"
-    # rom = "maze_empty"
-    rom = "maze_one_wall"
+    rom = "maze_empty"
+    # rom = "maze_one_wall"
     all_actions = False
     frame_skip = 1
     repeat_action_probability = 0
@@ -51,7 +51,7 @@ class Parameters:
     clip_delta = 1.0
     epsilon_start = 1.0
     epsilon_min = .1
-    epsilon_decay = 120 * steps_per_epoch
+    epsilon_decay = 10 * steps_per_epoch
     phi_length = 4
     update_frequency = 4
     replay_memory_size = 1000000
@@ -66,21 +66,22 @@ class Parameters:
     death_ends_episode = 'true'
     max_start_nullops = 30
     deterministic = 'true'
-    cudnn_deterministic = 'false'
+    random_seed = 1
+    cudnn_deterministic = 'true'
     display_screen = False
 
     agent_type = NeuralAgent
     qlearner_type = DeepQLearner
 
     # maze_type = 'maze_complex_01_pre'
-    # maze_type = 'maze_empty'
-    maze_type = 'maze_one_wall'
+    maze_type = 'maze_empty'
+    # maze_type = 'maze_one_wall'
     # maze_size = (16, 16)
     # maze_target = (14, 14)
     maze_init = (1, 1)
     #
-    # maze_size = (8, 8)
-    # maze_target = (6, 6)
+    maze_size = (8, 8)
+    maze_target = (6, 6)
 
     # maze_size = (12, 12)
     # maze_target = (10, 10)
@@ -88,8 +89,8 @@ class Parameters:
     # maze_size = (10, 10)
     # maze_target = (8, 8)
     # #
-    maze_size = (16, 16)
-    maze_target = (14, 14)
+    # maze_size = (16, 16)
+    # maze_target = (14, 14)
 
     # maze_size = (18, 18)
     # maze_target = (16, 16)
@@ -100,9 +101,9 @@ class Parameters:
     random_maze_target = True
 
     maze_max_action_count = (maze_size[0]+maze_size[1])*10
-    maze_enemy_count = 2
+    maze_enemy_count = 0
     maze_gate_reward_size = 0
-    maze_force_opposite_sides = True
+    maze_force_opposite_sides = False
 
 if __name__ == "__main__":
     launcher.launch(sys.argv[1:], Parameters, __doc__)
