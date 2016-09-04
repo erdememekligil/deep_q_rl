@@ -12,6 +12,7 @@ import cv2
 # This is appropriate for breakout, but it may need to be modified
 # for other games.
 import time
+from deep_q_rl.maze.maze_generator import MazeGenerator
 from deep_q_rl.visual_interface import VisualInterface
 
 CROP_OFFSET = 8
@@ -56,7 +57,7 @@ class ALEExperiment(object):
 
         self.agent.initialize(self.min_action_set)
         if self.display_screen:
-            self.vis = VisualInterface(self.agent.network, self.agent.data_set)
+            self.vis = VisualInterface(self.agent.network, self.agent.data_set, self.agent)
 
         for epoch in range(1, self.num_epochs + 1):
             self.agent.start_epoch(epoch)
@@ -117,15 +118,21 @@ class ALEExperiment(object):
         if not self.terminal_lol or self.ale.game_over():
             self.ale.reset_game()
 
-            if self.max_start_nullops > 0:
+            if self.max_start_nullops > 0 and not isinstance(self.ale, MazeGenerator):
                 random_actions = self.rng.randint(0, self.max_start_nullops+1)
                 for _ in range(random_actions):
                     self._act(0)  # Null action
 
         # Make sure the screen buffer is filled at the beginning of
         # each episode...
-        self._act(0)
-        self._act(0)
+        if isinstance(self.ale, MazeGenerator):
+            self._append_buffer()
+            self._append_buffer()
+            self._append_buffer()
+            self._append_buffer()
+        else:
+            self._act(0)
+            self._act(0)
 
     def _act(self, action):
         """Perform the indicated action for a single frame, return the
@@ -134,12 +141,15 @@ class ALEExperiment(object):
 
         """
         reward = self.ale.act(action)
+        self._append_buffer()
+        return reward
+
+    def _append_buffer(self):
         index = self.buffer_count % self.buffer_length
 
         self.screen_buffer[index, ...] = self.ale.getScreenGrayscale(self.screen_buffer[index, ...])
 
         self.buffer_count += 1
-        return reward
 
     def _step(self, action):
         """ Repeat one action the appopriate number of times and return

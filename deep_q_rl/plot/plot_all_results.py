@@ -44,7 +44,7 @@ def draw_plot(folder_name, dir):
         plt.savefig("{}.jpg".format(dir))
         plt.savefig("{}.jpg".format(os.path.join(dir, folder_name)))
     except:
-        print("Error saving ".format(folder_name))
+        print("Error saving {}".format(folder_name))
     # plt.show()
     plt.clf()
     print(folder_name)
@@ -54,4 +54,7 @@ def draw_plot(folder_name, dir):
 
 for subdir, dirs, files in os.walk(root_folder):
     for d in dirs:
-        draw_plot(d, os.path.join(subdir, d))
+        try:
+            draw_plot(d, os.path.join(subdir, d))
+        except:
+            print("Error plotting {}".format(d))

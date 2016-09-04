@@ -16,7 +16,7 @@ SCREEN_INIT_H = 1250
 
 # TODO weight sharing, global normalizasyon bar ile featurelarin -6 +12 gibi cizdirilmesi
 class VisualInterface(object):
-    def __init__(self, network, data_set):
+    def __init__(self, network, data_set, ale_agent):
         pygame.init()
         # self.screen = pygame.display.set_mode((1280, 1250), pygame.RESIZABLE)
         self.screen = pygame.display.set_mode((1024, 700), pygame.RESIZABLE)
@@ -28,6 +28,7 @@ class VisualInterface(object):
         self.font = pygame.font.SysFont("Arial", 15)
         self.general_offset_y = 0
         self.zero_precision = 0.01
+        self.ale_agent = ale_agent
 
         self.ratio_w = 1
         self.ratio_h = 1
@@ -206,7 +207,7 @@ class VisualInterface(object):
     def draw_info_panel(self, offset_x, offset_y, step, weights, outs, gap):
         gap = gap / 2
         # render step coutner
-        text = self.font.render("Step: " + str(step) + "   FPS: " + str(self.delay), True, (255, 255, 255))
+        text = self.font.render("Step: " + str(step) + "   FPS: " + str(self.delay) + "   Reward: " + str(self.ale_agent.episode_reward), True, (255, 255, 255))
         self.screen.blit(text, (0, offset_y))
         offset_y += text.get_height() + gap
 
