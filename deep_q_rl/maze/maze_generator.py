@@ -162,7 +162,7 @@ class MazeGenerator(MazeInterface):
         self.enemies = []
         for i in range(0, self.enemy_count):
             enemy = self.generate_random_position_without_wall()
-            while enemy == self.agent_pos or enemy == self.target_pos or enemy in self.enemies or self.collides_with_gate(enemy, self.gates):
+            while enemy == self.agent_pos or enemy == self.target_pos or enemy in self.enemies or self.collides_with_gate(enemy, self.gates)[0]:
                 enemy = self.generate_random_position_without_wall()
             self.enemies.append(enemy)
 
@@ -370,7 +370,7 @@ class MazeGenerator(MazeInterface):
         return Z
 
 if __name__ == "__main__":
-    m = MazeGenerator("maze_one_wall", maze_size=(12, 12), maze_target=(10, 10), random_maze_agent=True, random_maze_target=True, enemy_count=0, maze_force_opposite_sides=False, maze_gate_reward_size=2, rng=np.random.RandomState())
+    m = MazeGenerator("maze_one_wall", maze_size=(12, 12), maze_target=(10, 10), random_maze_agent=True, random_maze_target=True, enemy_count=0, maze_force_opposite_sides=True, maze_gate_reward_size=3, rng=np.random.RandomState())
     m.reset_game()
     i = 0
     while(not m.game_over() and i < 0):
