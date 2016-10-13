@@ -1,0 +1,3 @@
+epoch,num_episodes,total_reward,reward_per_epoch,mean_q
+1,535,5920,11.0654205607,0.855411161371
+2,538,7290,13.5501858736,1.50812634313

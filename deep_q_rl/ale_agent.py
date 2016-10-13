@@ -196,6 +196,15 @@ class NeuralAgent(AgentBase):
 
         self.last_img = observation
 
+        # init phi with empty observations
+        if self.testing:
+            data_set = self.test_data_set
+            data_set.add_sample(self.last_img, 0, 0, False)
+            data_set.add_sample(self.last_img, 0, 0, False)
+            data_set.add_sample(self.last_img, 0, 0, False)
+            data_set.add_sample(self.last_img, 0, 0, False)
+            self.step_counter = 4
+
         return return_action
 
     def _show_phis(self, phi1, phi2):
