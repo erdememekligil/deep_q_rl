@@ -66,6 +66,7 @@ class Parameters:
     deterministic = 'true'
     cudnn_deterministic = 'false'
     display_screen = False
+    random_seed = 1
 
     agent_type = NeuralAgent
     qlearner_type = DeepQLearner

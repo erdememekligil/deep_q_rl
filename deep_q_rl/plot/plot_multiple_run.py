@@ -61,6 +61,8 @@ def get_maze_name_val(full_name):
             return maze_name_mapping[m]
     return -1
 
+legend_use_map = []
+
 def draw_plot(folder_name, dir, t, color, legend_label):
     try:
         results = np.loadtxt(open("{}/{}".format(dir, "results.csv"), "rb"), delimiter=",", skiprows=1)
@@ -72,7 +74,11 @@ def draw_plot(folder_name, dir, t, color, legend_label):
         print("Zero len {}".format(folder_name))
         return
     plt.xlabel('Training Epochs')
-    plt.plot(results[:, 0], np.convolve(results[:, 3], kernel, mode='same'), color_map[color] + '-', label = legend_label)
+    if legend_label not in legend_use_map:
+        plt.plot(results[:, 0], np.convolve(results[:, 3], kernel, mode='same'), color_map[color] + '-', label = legend_label)
+        legend_use_map.append(legend_label)
+    else:
+        plt.plot(results[:, 0], np.convolve(results[:, 3], kernel, mode='same'), color_map[color] + '-', label = "")
     if any(results[:, 3] > 99):
         horizontal_line_pos = np.argmax(results[:, 3] > 99) + 1
         plt.axvline(horizontal_line_pos, c=color_map[color], ls="dashed")
@@ -84,7 +90,7 @@ i = 1
 try:
     for size_prefix, folder_name, note in file_size_list:
         try:
-            draw_plot(folder_name, os.path.join(root_folder, folder_name), None, size_color_map[size_prefix], "{}".format(note))
+            draw_plot(folder_name, os.path.join(root_folder, folder_name), None, size_color_map[size_prefix], "{}".format(size_prefix))
             print("{},{},{}".format(size_prefix, folder_name, note))
             i += 1
         except:
@@ -99,7 +105,7 @@ except ValueError:
 
 plt.title("")
 # plt.show()
-# plt.legend(loc='lower right')
+plt.legend(loc='lower right')
 fig = plt.gcf()
 fig.set_size_inches(18, 18)
 fig.savefig("{}.jpg".format(os.path.join(root_folder, split_path[split_path.__len__() - 1])))
