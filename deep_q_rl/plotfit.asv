@@ -1,0 +1,29 @@
+a = [8 4; 12 15; 16 36; 21 50];
+x = a(:,1)';
+y = a(:,2)';
+p = polyfit(x, y, 2);
+i = 7:40;
+v = polyval(p, i);
+figure;hold all;
+plot(i, v);
+plot(x,y, 'o');
+
+a = [8 10; 12 40; 16 90; 21 149];
+x = a(:,1)';
+y = a(:,2)';
+p = polyfit(x, y, 2);
+v = polyval(p, i);
+plot(i, v);
+plot(x,y, 'o');
+
+a = [8 30; 12 60; 16 142; 21 235];
+x = a(:,1)';
+y = a(:,2)';
+p = polyfit(x, y, 2);
+v = polyval(p, i);
+plot(i, v);
+plot(x,y, 'o');
+
+xlabel('Maze width/height')
+ylabel('Convergence epoch')
+legend('0 Wall', 'no wall', '2 walls');

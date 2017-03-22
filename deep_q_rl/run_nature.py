@@ -26,7 +26,40 @@ class Parameters:
     # ALE Parameters
     # ----------------------
     base_rom_path = "../roms/"
-    rom = 'breakout.bin'
+    # rom = 'Qbert.bin'
+    # rom = 'Bowling.bin'
+    # rom = 'atlantis.bin'
+    # rom = 'Fishing_Derby.bin'
+    # rom = 'space_invaders.bin'
+    # rom = 'star_gunner.bin'
+    # rom = 'name_this_game.bin'
+    # rom = 'video_pinball.bin'
+    # rom = 'Tutankham.bin'
+    # rom = 'ms_pacman.bin'
+    # rom = 'riverraid.bin'
+    # rom = 'gopher.bin'
+    # rom = 'crazy_climber.bin'
+    # rom = 'ice_hockey.bin'
+    # rom = 'robotank.bin'
+    # rom = 'pong.bin'
+    # rom = 'asterix.bin'
+    # rom = 'beam_rider.bin'
+    # rom = 'astroids.bin'
+    # rom = 'frostbite.bin'
+    # rom = 'jamesbond.bin'
+    # rom = 'private_eye.bin'
+    # rom = 'assault.bin'
+    # rom = 'kung_fu_master.bin'
+    # rom = 'krull.bin'
+    # rom = 'tennis.bin'
+    # rom = 'alien.bin'
+    # rom = 'road_runnerr.bin'
+    # rom = 'kangaroo.bin'
+    # rom = 'un_n_down.bin'
+    # rom = 'zaxxon.bin'
+    # rom = 'wizard_of_wor.bin'
+    # rom = 'venture.bin'
+    rom = 'time_pilot.bin'
     all_actions = False
     frame_skip = 4
     repeat_action_probability = 0
@@ -49,7 +82,7 @@ class Parameters:
     clip_delta = 1.0
     epsilon_start = 1.0
     epsilon_min = .1
-    epsilon_decay = 250000 * 75
+    epsilon_decay = 250000 * 4
     phi_length = 4
     update_frequency = 4
     replay_memory_size = 1000000
@@ -66,7 +99,7 @@ class Parameters:
     deterministic = 'true'
     cudnn_deterministic = 'false'
     display_screen = False
-    random_seed = 1
+    random_seed = 2
 
     agent_type = NeuralAgent
     qlearner_type = DeepQLearner
