@@ -116,7 +116,7 @@ def draw_sub_plot(file_size_list):
 
 fig, ax = plt.subplots(nrows=3, ncols=1, sharex=True, sharey=True, figsize=(6, 6))
 plt.gca().set_ylim([0, 100])
-plt.gca().set_xlim([0, 200])
+plt.gca().set_xlim([0, 250])
 
 fig.add_subplot(3,1,1)
 plt.gca().set_ylim([0, 100])
@@ -133,7 +133,7 @@ plt.title("12x12 maze")
 
 fig.add_subplot(3,1,3)
 plt.gca().set_ylim([0, 100])
-plt.gca().set_xlim([0, 200])
+plt.gca().set_xlim([0, 250])
 legend_use_map = []
 draw_sub_plot(file_size_list_16)
 plt.title("16x16 maze")

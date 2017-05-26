@@ -67,7 +67,7 @@ class Parameters:
     death_ends_episode = 'true'
     max_start_nullops = 30
     deterministic = 'true'
-    random_seed = 5
+    random_seed = 2
     cudnn_deterministic = 'true'
     display_screen = False
 
@@ -104,7 +104,7 @@ class Parameters:
 
     maze_max_action_count = (maze_size[0]+maze_size[1])*10
     maze_enemy_count = 0
-    maze_gate_reward_size = 3
+    maze_gate_reward_size = 0
     maze_force_opposite_sides = True
 
 if __name__ == "__main__":
