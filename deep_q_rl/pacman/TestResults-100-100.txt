@@ -1,0 +1,8 @@
+Test begin time: 4-21-11-16-17
+ALPHA:       0.1
+DISCOUNT:    0.95
+EXPLORATION: 0.1
+Average Score:4801.4
+Scores:       5590, 2790, 8790, 3990, 3990, 3810, 2790, 8790, 5590, 3190, 3190, 3190, 3190, 3990, 2790, 3190, 2050, 8790, 3990, 3990, 3190, 1280, 3190, 3990, 3190, 8790, 3990, 5590, 2790, 3190, 3990, 5590, 2790, 2790, 3990, 5590, 5590, 3190, 8790, 3990, 3990, 3190, 3990, 5590, 3990, 3990, 8790, 3190, 5590, 3990, 8790, 5590, 2250, 27990, 5590, 5590, 2080, 3990, 3990, 5590, 5590, 2790, 3990, 2640, 3990, 5590, 5590, 5590, 2790, 5590, 3990, 3190, 640, 2790, 3990, 3990, 15190, 3190, 3190, 5590, 2790, 3190, 5590, 15190, 3990, 8790, 8790, 1900, 3190, 3190, 3990, 5590, 3190, 3990, 3190, 3990, 2800, 3990, 8790, 3190
+Win Rate:      91/100 (0.91)
+Record:       Win, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Loss, Win, Win, Win, Loss, Win, Win, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Win, Loss, Win, Win, Win, Win, Win, Win, Win, Win, Loss, Win, Win, Win

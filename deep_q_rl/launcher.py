@@ -16,6 +16,8 @@ from deep_q_rl.libs import ale_python_interface
 from deep_q_rl.maze import maze_generator
 import os.path
 import json
+from deep_q_rl.pacman.pacman_generator import PacmanGenerator
+
 
 def convert_bool_arg(params, param_name):
     """Unfortunately, argparse doesn't handle converting strings to
@@ -283,6 +285,8 @@ def launch(args, defaults, description):
                                            params.random_maze_agent, params.random_maze_target,
                                            params.maze_max_action_count, params.maze_enemy_count,
                                            params.maze_gate_reward_size, params.maze_force_opposite_sides, params.rng)
+    elif params.rom.startswith("custom_pacman"):
+        ale = PacmanGenerator()
     else:
         if params.rom.endswith('.bin'):
             rom = params.rom
