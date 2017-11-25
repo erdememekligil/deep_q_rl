@@ -44,11 +44,11 @@ size_color_map = {"8" : 1,
                  "16" : 3,
                  "21" : 4}
 
-enemy_color_map = {"0" : 1,
-                  "1" : 2,
-                 "2" : 3,
-                 "3" : 4,
-                 "4" : 5}
+enemy_color_map = {"0" : 6,
+                  "1" : 1,
+                 "2" : 2,
+                 "3" : 3,
+                 "4" : 4}
 
 size_legend_labels = {1 : "no wall",
                  2 : "one wall",

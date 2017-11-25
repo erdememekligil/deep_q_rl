@@ -1,0 +1,42 @@
+Game		Learning speed	Human	Paper score	Variance (±)
+Alien	alien	1	6875,0	3069,0	1093,0
+Amidar	amidar	2	1676,0	739,5	3024,0
+Assault	assault	1	1496,0	3359,0	775,0
+Asterix	asterix	1	8503,0	6012,0	1744,0
+Atlantis	atlantis	3	29028,0	85641,0	17600,0
+Bank Heist	bank_heist	1	734,4	429,7	650,0
+Battle Zone	battle_zone	1	37800,0	26300,0	7725,0
+Bowling	Bowling	1	154,8	42,4	88,0
+Boxing	boxing	2	4,3	71,8	8,4
+Breakout	breakout	1	31,8	401,2	26,9
+Centipede	centipede	4	11963,0	8309,0	5237,0
+Chopper Command	chopper_command	2	9882,0	6687,0	2916,0
+Crazy Climber	crazy_climber	2	35411,0	114103,0	22797,0
+Demon Attack	demon_attack	2	3401,0	9711,0	2406,0
+Double Dunk	double_dunk	2	-15,5	-18,1	2,6
+Enduro	Enduro	1	309,6	301,8	24,6
+Frostbite	frostbite	3	4335,0	328,3	250,5
+Gopher	gopher	2	2321,0	8520,0	3279,0
+Gravitar	gravitar	2	2672,0	306,7	223,9
+H.E.R.O.	hero	2	25763,0	19950,0	158,0
+Ice Hockey	ice_hockey	3	0,9	-1,6	2,5
+Kangaroo	kangaroo	4	3035,0	6740,0	2959,0
+Krull	krull	4	2395,0	3805,0	1033,0
+Kung-Fu Master	kung_fu_master	4	22736,0	23270,0	5955,0
+Ms. Pacman	ms_pacman	2	15693,0	2311,0	525,0
+Name This Game	name_this_game	2	4076,0	7257,0	547,0
+Pong	pong	2	9,3	18,9	1,3
+Q*bert	Qbert	2	13455,0	10596,0	3294,0
+River Raid	riverraid	4	13513,0	8316,0	1049,0
+Road Runner	road_runner	2	7845,0	18257,0	4268,0
+Robotank	robotank	2	11,9	51,6	4,7
+Seaquest	seaquest	2	20182,0	5286,0	1310,0
+Space Invaders	space_invaders	1	1652,0	1976,0	893,0
+Star Gunner	star_gunner	3	10250,0	57997,0	3152,0
+Tennis	tennis	3	-8,9	-2,5	1,9
+Time Pilot	time_pilot	3	5925,0	5947,0	1600,0
+Tutankham	Tutankham	3	167,6	186,7	41,9
+Up and Down	up_n_down	3	9082,0	8456,0	3162,0
+Video pinball	video_pinball	3	17298,0	42684,0	16287,0
+Wizard of Wor	wizard_of_wor	4	4757,0	3393,0	2019,0
+Zaxxon	zaxxon	2	9173,0	4977,0	1235,0

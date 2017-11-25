@@ -1,0 +1,49 @@
+Alien	1
+Amidar	2
+Assault	1
+Asterix	1
+Asteroids
+Atlantis	3
+Bank Heist	1
+Battle Zone	1
+Beam Rider
+Bowling	1
+Boxing	2
+Breakout	1
+Centipede	4
+Chopper Command	2
+Crazy Climber	2
+Demon Attack	2
+Double Dunk	2
+Enduro	1
+Fishing Derby	5
+Freeway	5
+Frostbite	3
+Gopher	2
+Gravitar	2
+H.E.R.O.	2
+Ice Hockey	3
+James Bond	5
+Kangaroo	4
+Krull	4
+Kung-Fu Master	4
+Montezuma's Revenge	5
+Ms. Pacman	2
+Name This Game	2
+Pong	2
+Private Eye	5
+Q*bert	2
+River Raid	4
+Road Runner	2
+Robotank	2
+Seaquest	2
+Space Invaders	1
+Star Gunner	3
+Tennis	3
+Time Pilot	3
+Tutankham	3
+Up and Down	3
+Venture	5
+Video pinball	3
+Wizard of Wor	4
+Zaxxon	2
