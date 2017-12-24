@@ -1,0 +1,11 @@
+2,custom_pacman_12-13-0749_57_317000,empty,90
+2,custom_pacman_12-13-0750_10_014000,intermed,50
+2,custom_pacman_12-17-2121_44_755000,empty+wall,80
+2,custom_pacman_12-17-2122_31_047000,intermed+wall,60
+2,custom_pacman_12-22-0016_35_834000,empty+wall_hard,120
+0,custom_pacman_12-20-0026_43_044000,empty,25
+0,custom_pacman_12-21-0021_12_326000,intermed,24
+0,custom_pacman_12-21-0023_39_603000,empty+wall,22
+0,custom_pacman_12-21-0021_57_625000,intermed+wall,65
+0,custom_pacman_12-22-0014_47_359000,empty+wall_hard,47
+enemy,name,expl,?

@@ -807,10 +807,10 @@ class Game:
 
       # Execute the action
       self.moveHistory.append( (agentIndex, action) )
-      try:
-        self.state = self.state.generateSuccessor( agentIndex, action )
-      except Exception:
-        pass
+      # try:
+      self.state = self.state.generateSuccessor( agentIndex, action )
+      # except Exception:
+      #   pass
 
       # Change the display
       self.display.update( self.state.data )

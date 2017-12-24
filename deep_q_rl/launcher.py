@@ -286,7 +286,7 @@ def launch(args, defaults, description):
                                            params.maze_max_action_count, params.maze_enemy_count,
                                            params.maze_gate_reward_size, params.maze_force_opposite_sides, params.rng)
     elif params.rom.startswith("custom_pacman"):
-        ale = PacmanGenerator()
+        ale = PacmanGenerator(params.maze_type, params.maze_enemy_count)
     else:
         if params.rom.endswith('.bin'):
             rom = params.rom

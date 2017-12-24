@@ -19,12 +19,20 @@ import cPickle
 import os
 import logging
 
+#custom_pacman_11-30-2350_58_709000 sonrakiler degisik
+#custom_pacman_12-05-0108_49_929000 sonrakilerde -1 reward yok
+# BLACK = 0
+# ENEMY = 42
+# FOOD = 84
+# SCARED_ENEMY = 126
+# PACMAN = 168
+# POWERUP = 210
+# WHITE = 255
 BLACK = 0
-ENEMY = 42
-FOOD = 84
-SCARED_ENEMY = 126
-PACMAN = 168
-POWERUP = 210
+ENEMY = 51
+FOOD = 102
+PACMAN = 153
+POWERUP = 204
 WHITE = 255
 
 WALL = WHITE
@@ -34,14 +42,14 @@ color_map = {
     0: WALL,
     1: PACMAN,
     2: ENEMY,
-    3: SCARED_ENEMY,
+    3: ENEMY,
     4: FOOD,
     5: POWERUP
 }
 
 
 class PacmanGenerator(MazeInterface):
-    def __init__(self, l="originalClassic", n=60, x=50, timeout=30):
+    def __init__(self, layout="mediumClassic", numghosts=2):
         super(PacmanGenerator, self).__init__()
         # self.maze_type = l
         # self.maze_layout = layout.getLayout(l)
@@ -59,7 +67,7 @@ class PacmanGenerator(MazeInterface):
         # cmd = "-p KeyboardAgent --textGraphics --frameTime 0"
         # cmd = "-p KeyboardAgent --quietTextGraphics --frameTime 0"
         # cmd = "-p KeyboardAgent --quietTextGraphics --frameTime 0 --layout smallClassic"
-        cmd = "-p KeyboardAgent --quietTextGraphics --frameTime 0 --layout smallClassic --numghosts 1"
+        cmd = "-p KeyboardAgent --quietTextGraphics --frameTime 0 --layout {} --numghosts {}".format(layout, numghosts)
 
         self.args = readCommand( cmd.split(" ") ) # Get game components based on input
         rules1, layout1, pacman, ghosts, gameDisplay, beQuiet, catchExceptions = self.get_game_config(**self.args)
@@ -156,25 +164,22 @@ class PacmanGenerator(MazeInterface):
 
     def act(self, action_index):
         prev = self.game.state.getScore()
-        self.game.runOneStep(Actions.indexToDirection(action_index))
-        return self.game.state.getScore() - prev
+        try:
+            self.game.runOneStep(Actions.indexToDirection(action_index))
+            return self.game.state.getScore() - prev
+        except Exception:
+            if not self.game_over():
+                self.reset_game()
+                return self.act(action_index)
+            else:
+                return self.game.state.getScore() - prev
+        # if prev != 0 and self.game.state.getScore() == prev:
+        #     self.reset_game()
+        #     return self.act(action_index)
+        # else:
+        #     return self.game.state.getScore() - prev
+        # return self.game.state.getScore() - prev
 
-        ## game.run fonksionunu icinde bir step olacak sekilde
-        ##action = maze_actions.get_action(action_index).value
-        ##next_pos = tuple(map(operator.add, self.agent_pos, action))
-        ##if self.maze[next_pos[1]][next_pos[0]] != WALL:
-        ##    self.agent_pos = next_pos
-
-        ##self.action_count += 1
-        ##if self.agent_pos == self.target_pos:  # end episode
-        ##    rwrd = 100 - self.reward_given
-        ##    self.reward_given = 100
-        ##    return rwrd
-        ##elif self.check_gate_reward():
-        ##    self.reward_given += GATE_REWARD
-        ##    return GATE_REWARD
-        ##else:
-        ##    return 0
 
     def reset_game(self):
         rules1, layout1, pacman, ghosts, gameDisplay, beQuiet, catchExceptions = self.get_game_config(**self.args)
@@ -229,13 +234,13 @@ class PacmanGenerator(MazeInterface):
         return rules, layout, pacman, ghosts, gameDisplay, beQuiet, catchExceptions
 
 if __name__ == "__main__":
-    m = PacmanGenerator("originalClassic", 60, 50)
+    m = PacmanGenerator("ms_pacman_empty_intermed_wall")
     # m.reset_game()
     # pyplot.imshow(m.getScreenRGB(), cmap='Greys_r', interpolation='nearest')
     # pyplot.show()
     i = 0
     total_r = 0
-    while (not m.game_over()):
+    while (not m.game_over() and i < 20):
         action = rand(0, 3)
         r = m.act(action)
         print action, r

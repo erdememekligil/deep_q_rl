@@ -71,6 +71,19 @@ class Parameters:
     agent_type = NeuralAgent
     qlearner_type = DeepQLearner
 
+    maze_type = "D:\dev\projects\deep_q_rl\deep_q_rl\pacman\layouts\ms_pacman_empty_wall_hard.lay"
+    maze_enemy_count = 2
+    maze_size = 0
+
+    #temp
+    maze_init = 0
+    maze_target = 0
+    random_maze_agent = True
+    random_maze_target = True
+    maze_max_action_count = 0
+    maze_gate_reward_size = 0
+    maze_force_opposite_sides = False
+
 
 if __name__ == "__main__":
     deep_q_rl.launcher.launch(sys.argv[1:], Parameters, __doc__)

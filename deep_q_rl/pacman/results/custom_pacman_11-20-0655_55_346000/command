@@ -1,0 +1,2 @@
+
+cmd = "-p KeyboardAgent --quietTextGraphics --frameTime 0 --layout smallClassic --numghosts 1"

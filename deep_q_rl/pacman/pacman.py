@@ -248,7 +248,7 @@ class GameState:
 
 SCARED_TIME = 40    # Moves ghosts are scared
 COLLISION_TOLERANCE = 0.7 # How close ghosts must be to Pacman to kill
-TIME_PENALTY = 1 #1 # Number of points lost each round
+TIME_PENALTY = 0 #1 # Number of points lost each round
 PACMAN_LOSE_LIFE_PENALTY = 500 #500
 SCARED_GHOST_EATEN_BASE_REWARD = 200
 PACMAN_GHOST_EAT_MULTIPLIER_ENABLED = True
@@ -357,13 +357,16 @@ class PacmanRules:
       state.data._foodEaten = position
       # TODO: cache numFood?
       numFood = state.getNumFood()
-      if numFood == 0 and not state.data._lose:
-        state.data.scoreChange += 500
-        state.data._win = True
+      # if numFood == 0 and not state.data._lose: # EE: dont win
+      #   state.data.scoreChange += 500
+      #   state.data._win = True
     # Eat capsule
     if( position in state.getCapsules() ):
       state.data.capsules.remove( position )
       state.data._capsuleEaten = position
+      # EE: win game when capsule is eaten
+      state.data.scoreChange += 500
+      state.data._win = True
       # Reset all ghosts' scared timers
       for index in range( 1, len( state.data.agentStates ) ):
         state.data.agentStates[index].scaredTimer = SCARED_TIME

@@ -1,0 +1,35 @@
+run	maze	e_decay
+custom_pacman_12-06-2031_42_889000	smallClassicIntermed2	40
+buradan sonra bugfix oldu. ustteki duzgun olmayabilir.
+custom_pacman_12-08-0641_59_176000	smallClassicIntermedEmpty	60
+custom_pacman_12-08-0642_28_346000	smallClassicIntermed2	10
+custom_pacman_12-09-1707_31_595000	smallClassicIntermedEmpty	10
+
+0642_28_346000 ile kıyaslamak için alttaki denendi. Ama başarısız 10 ile yapmak daha iyi sonuç veriyor.
+custom_pacman_12-11-0043_18_072000	smallClassicIntermed2	60
+
+
+default path e blok koy
+-default dene
+-düşman
+-blok
+
+-1reward vermeyi düşün.
+
+
+mr. pacman gridinin aynısı ile dene
+
+ms pacman
+---------
+rom enemy   what    convergence
+custom_pacman_12-13-0749_57_317000  2   empty   90
+custom_pacman_12-13-0750_10_014000  2   intermed    50
+custom_pacman_12-17-2121_44_755000  2   empty+wall  80
+custom_pacman_12-17-2122_31_047000  2   intermed+wall   60
+custom_pacman_12-22-0016_35_834000  2   empty+wall_hard
+
+custom_pacman_12-20-0026_43_044000  0   empty   25
+custom_pacman_12-21-0021_12_326000  0   intermed    24
+custom_pacman_12-21-0023_39_603000  0   empty+wall  22
+custom_pacman_12-21-0021_57_625000  0   intermed+wall   65
+custom_pacman_12-22-0014_47_359000  0   empty+wall_hard 47
