@@ -1,0 +1,35 @@
+Amidar - Kangaroo - Qbert : Benzer özellikler
+
+Ms Pacman - Alien - Bank Heist : Benzer oyunlar
+
+Wizard of wor - Alien : Uzak cluster'da
+
+Zaxxon - Robotank - Enduro : Shortest linkage'daki gibi çýkmadý.
+
+Demon attack - Assault - Space Invaders : benzer oyunlar
+
+1)DTW avg mantýklý sonuç üretiyor mu?	
+	mantýklý ise clusterlar bölünürken neye göre bölünüyor onu bulmaya çalýþ. Faktorlerle tutarlýmý.
+	
+2)tree üzzerinde 2 node arasýndaki mesafe hesaplamak
+	tüm sub treeler arasýndaki NxN lik mesafeyi hesaplayýp bunlarýn ortalamasýný almak
+	bu sayede ortalama oyunlar arasý mesafe bulunur.
+	biyoloji evrim-tür farklarýnda da doðrudan bu kullanýlýyor.
+	bir birine hep yakýn olan oyunlarý bulmak için
+
+el ile seçtiðim 4 grup bu sonuçlara yakýnmý?
+	Biraz proove etmek gerekiyor. gerekirse tezden atýlabilir.
+
+bunlarý ayrý bir chapter olarak
+
+
+dtw avg notes
+-------------
+asterix, battlezone, kangaroo: benzer factorlere sahipler.
+
+
+
+3 kere çalýþtýr.
+mart 12 paper due.
+30 mart savunma hedefi.
+dtw + avg sonuçlarý koy.

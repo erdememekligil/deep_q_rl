@@ -81,7 +81,7 @@ for subdir, dirs, files in os.walk(root_folder):
 
             if game_name in original_results_map:
                 original_game_score = original_results_map[game_name]
-                plt.plot((0, x_limit), (original_game_score, original_game_score), 'r-')
+                plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
             i += 1
         except:
             print("Error plotting {}".format(d))
@@ -108,7 +108,7 @@ for subdir, dirs, files in os.walk(root_folder):
 
             if game_name in original_results_map:
                 original_game_score = original_results_map[game_name]
-                plt.plot((0, x_limit), (original_game_score, original_game_score), 'r-')
+                plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
             i += 1
         except:
             print("Error plotting {}".format(d))
@@ -134,7 +134,7 @@ for l in range(1, 5):
 
                 if game_name in original_results_map:
                     original_game_score = original_results_map[game_name]
-                    plt.plot((0, x_limit), (original_game_score, original_game_score), 'r-')
+                    plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
                 i += 1
             except:
                 print("Error plotting {}".format(d))
