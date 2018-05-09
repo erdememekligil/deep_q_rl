@@ -32,6 +32,7 @@ c1_dtw = ['assault',
 'kung_fu_master',
 'private_eye',
 'seaquest',
+'star_gunner',
 'time_pilot',
 'Tutankham',
 'up_n_down',
@@ -61,8 +62,6 @@ c2_dtw =['alien',
 'road_runner',
 'robotank',
 'space_invaders',
-'star_gunner',
-'tennis',
 'zaxxon']
 # c2_dtw = ['alien', 'ms_pacman', 'bank_heist', 'pong', 'space_invaders', 'boxing', 'hero', 'asterix', 'battle_zone', 'kangaroo',
 #      'Qbert', 'breakout']
@@ -70,7 +69,6 @@ c2_dtw =['alien',
 
 c3_dtw =['atlantis',
 'freeway',
-'riverraid',
 'venture',
 'video_pinball']
 
@@ -80,6 +78,52 @@ c2= ['road_runner', 'bank_heist', 'space_invaders', 'ms_pacman', 'alien', 'boxin
 c3 =['hero', 'amidar', 'kangaroo', 'Qbert', 'gopher']
 c4 = ['battle_zone', 'name_this_game', 'zaxxon', 'demon_attack', 'private_eye', 'krull', 'Bowling', 'robotank', 'breakout',
       'double_dunk', 'Fishing_Derby', 'crazy_climber', 'Enduro', 'ice_hockey']
+
+name_map = {'assault': 'Assault',
+'centipede': 'Centipede',
+'chopper_command': 'Chopper Command',
+'Enduro': 'Enduro',
+'Fishing_Derby': 'Fishing Derby',
+'frostbite': 'Frostbite',
+'gravitar': 'Gravitar',
+'krull': 'Krull',
+'kung_fu_master': 'Kung-Fu Master',
+'private_eye': 'Private Eye',
+'seaquest': 'Seaquest',
+'star_gunner': 'Star Gunner',
+'time_pilot': 'Time Pilot',
+'Tutankham': 'Tutankham',
+'up_n_down': 'Up and Down',
+'wizard_of_wor': 'Wizard of Wor',
+'alien': 'Alien',
+'amidar': 'Amidar',
+'asterix': 'Asterix',
+'bank_heist': 'Bank Heist',
+'battle_zone': 'Battle Zone',
+'Bowling': 'Bowling',
+'boxing': 'Boxing',
+'breakout': 'Breakout',
+'crazy_climber': 'Crazy Climber',
+'demon_attack': 'Demon Attack',
+'double_dunk': 'Double Dunk',
+'gopher': 'Gopher',
+'hero': 'Hero',
+'ice_hockey': 'Ice Hockey',
+'kangaroo': 'Kangaroo',
+'ms_pacman': 'Ms. Pacman',
+'name_this_game': 'Name This Game',
+'pong': 'Pong',
+'Qbert': 'Q*bert',
+'road_runner': 'Road Runner',
+'robotank': 'Robotank',
+'space_invaders': 'Space Invaders',
+'zaxxon': 'Zaxxon',
+'riverraid': 'River Raid',
+'atlantis': 'Atlantis',
+'freeway': 'Freeway',
+'venture': 'Venture',
+'video_pinball': 'Video Pinball',
+'tennis': 'Tennis'}
 
 
 original_results_map = {}
@@ -142,7 +186,7 @@ for subdir, dirs, files in os.walk(root_folder):
             # if game_name not in learning_speeds_map['1']:
             #     continue
             plt.subplot(row_count, row_count, i)
-            plt.title(game_name)
+            plt.title(name_map[game_name])
             x_limit = draw_plot(d, os.path.join(subdir, d))
 
             if game_name in original_results_map:
@@ -155,7 +199,7 @@ for subdir, dirs, files in os.walk(root_folder):
 
 #i = i + 2
 
-plt.gcf().set_size_inches(22, 22)
+plt.gcf().set_size_inches(16, 16)
 plt.gcf().subplots_adjust()
 #plt.show()
 plt.savefig("{}.pdf".format(os.path.join(root_folder, "dtw_atari_cluster1")),  bbox_inches='tight')
@@ -172,8 +216,8 @@ for subdir, dirs, files in os.walk(root_folder):
                 continue
             # if game_name not in learning_speeds_map['1']:
             #     continue
-            plt.subplot(5, 5, i)
-            plt.title(game_name)
+            plt.subplot(6, 4, i)
+            plt.title(name_map[game_name])
             x_limit = draw_plot(d, os.path.join(subdir, d))
 
             if game_name in original_results_map:
@@ -183,7 +227,7 @@ for subdir, dirs, files in os.walk(root_folder):
         except:
             print("Error plotting {}".format(d))
 
-plt.gcf().set_size_inches(22, 22)
+plt.gcf().set_size_inches(16, 20)
 plt.gcf().subplots_adjust()
 #plt.show()
 plt.savefig("{}.pdf".format(os.path.join(root_folder, "dtw_atari_cluster2")),  bbox_inches='tight')
@@ -201,8 +245,8 @@ for subdir, dirs, files in os.walk(root_folder):
                 continue
             # if game_name not in learning_speeds_map['1']:
             #     continue
-            plt.subplot(3, 2, i)
-            plt.title(game_name)
+            plt.subplot(2, 2, i)
+            plt.title(name_map[game_name])
             x_limit = draw_plot(d, os.path.join(subdir, d))
 
             if game_name in original_results_map:
@@ -212,149 +256,11 @@ for subdir, dirs, files in os.walk(root_folder):
         except:
             print("Error plotting {}".format(d))
 
-plt.gcf().set_size_inches(22, 22)
+plt.gcf().set_size_inches(10, 10)
 plt.gcf().subplots_adjust()
 #plt.show()
 plt.savefig("{}.pdf".format(os.path.join(root_folder, "dtw_atari_cluster3")),  bbox_inches='tight')
 plt.savefig("{}.jpg".format(os.path.join(root_folder, "dtw_atari_cluster3")),  bbox_inches='tight')
-
-
-plt.clf()
-i = 1
-for subdir, dirs, files in os.walk(root_folder):
-    for d in dirs:
-        try:
-            game_name = d[0:len(d) - 21]
-            if game_name not in c1:
-                continue
-            # if game_name not in learning_speeds_map['1']:
-            #     continue
-            plt.subplot(row_count, row_count, i)
-            plt.title(game_name)
-            x_limit = draw_plot(d, os.path.join(subdir, d))
-
-            if game_name in original_results_map:
-                original_game_score = original_results_map[game_name]
-                plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
-            i += 1
-        except:
-            print("Error plotting {}".format(d))
-
-plt.gcf().set_size_inches(22, 22)
-plt.gcf().subplots_adjust()
-#plt.show()
-plt.savefig("{}.pdf".format(os.path.join(root_folder, "atari_cluster1")),  bbox_inches='tight')
-plt.savefig("{}.jpg".format(os.path.join(root_folder, "atari_cluster1")),  bbox_inches='tight')
-
-plt.clf()
-i = 1
-for subdir, dirs, files in os.walk(root_folder):
-    for d in dirs:
-        try:
-            game_name = d[0:len(d) - 21]
-            if game_name not in c2:
-                continue
-            # if game_name not in learning_speeds_map['1']:
-            #     continue
-            plt.subplot(row_count, row_count, i)
-            plt.title(game_name)
-            x_limit = draw_plot(d, os.path.join(subdir, d))
-
-            if game_name in original_results_map:
-                original_game_score = original_results_map[game_name]
-                plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
-            i += 1
-        except:
-            print("Error plotting {}".format(d))
-
-plt.gcf().set_size_inches(22, 22)
-plt.gcf().subplots_adjust()
-#plt.show()
-plt.savefig("{}.pdf".format(os.path.join(root_folder, "atari_cluster2")),  bbox_inches='tight')
-plt.savefig("{}.jpg".format(os.path.join(root_folder, "atari_cluster2")),  bbox_inches='tight')
-
-plt.clf()
-i = 1
-for subdir, dirs, files in os.walk(root_folder):
-    for d in dirs:
-        try:
-            game_name = d[0:len(d) - 21]
-            if game_name not in c3:
-                continue
-            # if game_name not in learning_speeds_map['1']:
-            #     continue
-            plt.subplot(row_count, row_count, i)
-            plt.title(game_name)
-            x_limit = draw_plot(d, os.path.join(subdir, d))
-
-            if game_name in original_results_map:
-                original_game_score = original_results_map[game_name]
-                plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
-            i += 1
-        except:
-            print("Error plotting {}".format(d))
-
-plt.gcf().set_size_inches(22, 22)
-plt.gcf().subplots_adjust()
-#plt.show()
-plt.savefig("{}.pdf".format(os.path.join(root_folder, "atari_cluster3")),  bbox_inches='tight')
-plt.savefig("{}.jpg".format(os.path.join(root_folder, "atari_cluster3")),  bbox_inches='tight')
-
-
-plt.clf()
-i = 1
-for subdir, dirs, files in os.walk(root_folder):
-    for d in dirs:
-        try:
-            game_name = d[0:len(d) - 21]
-            if game_name not in c4:
-                continue
-            # if game_name not in learning_speeds_map['1']:
-            #     continue
-            plt.subplot(row_count, row_count, i)
-            plt.title(game_name)
-            x_limit = draw_plot(d, os.path.join(subdir, d))
-
-            if game_name in original_results_map:
-                original_game_score = original_results_map[game_name]
-                plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
-            i += 1
-        except:
-            print("Error plotting {}".format(d))
-
-plt.gcf().set_size_inches(22, 22)
-plt.gcf().subplots_adjust()
-#plt.show()
-plt.savefig("{}.pdf".format(os.path.join(root_folder, "atari_cluster4")),  bbox_inches='tight')
-plt.savefig("{}.jpg".format(os.path.join(root_folder, "atari_cluster4")),  bbox_inches='tight')
-
-
-plt.clf()
-i = 1
-for subdir, dirs, files in os.walk(root_folder):
-    for d in dirs:
-        try:
-            game_name = d[0:len(d) - 21]
-            if game_name in (c1 + c2 + c3 + c4):
-                continue
-            # if game_name not in learning_speeds_map['1']:
-            #     continue
-            plt.subplot(row_count, row_count, i)
-            plt.title(game_name)
-            x_limit = draw_plot(d, os.path.join(subdir, d))
-
-            if game_name in original_results_map:
-                original_game_score = original_results_map[game_name]
-                plt.plot((0, x_limit), (original_game_score, original_game_score), 'w-')
-            i += 1
-        except:
-            print("Error plotting {}".format(d))
-
-plt.gcf().set_size_inches(22, 22)
-plt.gcf().subplots_adjust()
-#plt.show()
-plt.savefig("{}.pdf".format(os.path.join(root_folder, "atari_cluster5")),  bbox_inches='tight')
-plt.savefig("{}.jpg".format(os.path.join(root_folder, "atari_cluster5")),  bbox_inches='tight')
 
 
 atari_path = r'D:\GoogleDrive\MSc\tez\atari'
@@ -378,7 +284,7 @@ for subdir, dirs, files in os.walk(root_folder):
             # if game_name not in learning_speeds_map['1']:
             #     continue
             plt.subplot(row_count, row_count, i)
-            plt.title(game_name)
+            plt.title(name_map[game_name])
             plt.imshow(mpimg.imread(atari_path +'/' + full_name))
             gca1 = plt.gca()
             gca1.axes.get_xaxis().set_visible(False)
@@ -388,7 +294,7 @@ for subdir, dirs, files in os.walk(root_folder):
         except:
             print("Error plotting {}".format(d))
 
-plt.gcf().set_size_inches(22, 22)
+plt.gcf().set_size_inches(16, 16)
 plt.gcf().subplots_adjust()
 #plt.show()
 plt.savefig("{}.pdf".format(os.path.join(root_folder, "dtw_atari_cluster1_img")),  bbox_inches='tight')
@@ -410,8 +316,8 @@ for subdir, dirs, files in os.walk(root_folder):
                     full_name = atari_image_name
             # if game_name not in learning_speeds_map['1']:
             #     continue
-            plt.subplot(5, 5, i)
-            plt.title(game_name)
+            plt.subplot(6, 4, i)
+            plt.title(name_map[game_name])
             plt.imshow(mpimg.imread(atari_path +'/' + full_name))
             gca1 = plt.gca()
             gca1.axes.get_xaxis().set_visible(False)
@@ -421,7 +327,7 @@ for subdir, dirs, files in os.walk(root_folder):
         except:
             print("Error plotting {}".format(d))
 
-plt.gcf().set_size_inches(22, 22)
+plt.gcf().set_size_inches(16, 20)
 plt.gcf().subplots_adjust()
 #plt.show()
 plt.savefig("{}.pdf".format(os.path.join(root_folder, "dtw_atari_cluster2_img")),  bbox_inches='tight')
@@ -443,8 +349,8 @@ for subdir, dirs, files in os.walk(root_folder):
                     full_name = atari_image_name
             # if game_name not in learning_speeds_map['1']:
             #     continue
-            plt.subplot(3, 2, i)
-            plt.title(game_name)
+            plt.subplot(2, 2, i)
+            plt.title(name_map[game_name])
             plt.imshow(mpimg.imread(atari_path +'/' + full_name))
             gca1 = plt.gca()
             gca1.axes.get_xaxis().set_visible(False)
@@ -454,7 +360,7 @@ for subdir, dirs, files in os.walk(root_folder):
         except:
             print("Error plotting {}".format(d))
 
-plt.gcf().set_size_inches(22, 22)
+plt.gcf().set_size_inches(10, 10)
 plt.gcf().subplots_adjust()
 #plt.show()
 plt.savefig("{}.pdf".format(os.path.join(root_folder, "dtw_atari_cluster3_img")),  bbox_inches='tight')

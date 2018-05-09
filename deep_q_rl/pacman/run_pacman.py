@@ -64,14 +64,19 @@ class Parameters:
     death_ends_episode = 'true'
     max_start_nullops = 30
     deterministic = 'true'
-    random_seed = 1
+    random_seed = 4
     cudnn_deterministic = 'true'
     display_screen = False
 
     agent_type = NeuralAgent
     qlearner_type = DeepQLearner
 
+    # maze_type = "D:\dev\projects\deep_q_rl\deep_q_rl\pacman\layouts\ms_pacman_empty.lay"
+    # maze_type = "D:\dev\projects\deep_q_rl\deep_q_rl\pacman\layouts\ms_pacman_empty_intermed.lay"
+    # maze_type = "D:\dev\projects\deep_q_rl\deep_q_rl\pacman\layouts\ms_pacman_empty_wall.lay"
+    # maze_type = "D:\dev\projects\deep_q_rl\deep_q_rl\pacman\layouts\ms_pacman_empty_intermed_wall.lay"
     maze_type = "D:\dev\projects\deep_q_rl\deep_q_rl\pacman\layouts\ms_pacman_empty_wall_hard.lay"
+    # maze_type = "D:\dev\projects\deep_q_rl\deep_q_rl\pacman\layouts\ms_pacman_empty_intermed_wall_hard.lay"
     maze_enemy_count = 2
     maze_size = 0
 

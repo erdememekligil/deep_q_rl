@@ -29,7 +29,7 @@ end
 
 labels = full_data(1:end,1);
 linkages = {'single', 'average', 'complete'};
-
+linkages = {'average'}
 for j=1:length(linkages)
     distance = 'dtw';
     linkage_method = linkages{j};
@@ -62,7 +62,7 @@ for j=1:length(linkages)
     saveas(gcf,['dendrograms/dendogram_' distance '_' linkage_method '.png'])
 end
 %%
-T = cluster(Z,'maxclust',3);
+T = cluster(Z,'maxclust',5);
 temp = labels;
 %T = cluster(Z,'cutoff',0.55);
 for i = 1:size(labels,1)

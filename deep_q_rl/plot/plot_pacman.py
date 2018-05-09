@@ -15,6 +15,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import sys
 
+# RANDOM_SEED = ['1']
+# RANDOM_SEED = ['2']
+# RANDOM_SEED = ['3']
+# RANDOM_SEED = ['4']
+# RANDOM_SEED = ['5']
+RANDOM_SEED = ['1', '2', '3', '4', '5']
+
 maze_name_mapping = {"maze_empty" : 0,
                     "maze_one_wall" : 1,
                     "maze_two_wall" : 2}
@@ -64,6 +71,14 @@ explanation_map = {"empty": "a",
     "intermed+wall_hard": "f"
 }
 
+explanation_colors = {"empty": 1,
+                   "intermed": 2,
+                   "empty+wall" : 3,
+    "intermed+wall": 4,
+    "empty+wall_hard": 5,
+    "intermed+wall_hard": 6
+}
+
 # Modify this to do some smoothing...
 kernel = np.array([1.] * 1)
 kernel = kernel / np.sum(kernel)
@@ -101,6 +116,7 @@ def draw_plot(folder_name, dir, enemy_count, color, legend_label):
     print folder_name, color, legend_label
     if legend_label not in legend_use_map:
         if legend_label in explanation_map:
+            color = explanation_colors[legend_label]
             legend_label = explanation_map[legend_label]
         plt.plot(results[:, 0], np.convolve(results[:, column_index], kernel, mode='same'), color_map[color] + dash_map[color], label = legend_label)
         legend_use_map.append(legend_label)
@@ -113,7 +129,9 @@ def draw_plot(folder_name, dir, enemy_count, color, legend_label):
 
 
 i = 1
-for enemy_count, folder_name, explanation,_ in pacman_txt:
+for enemy_count, folder_name, explanation, note in pacman_txt:
+    if not note in RANDOM_SEED:
+        continue
     if enemy_count == '0':
         draw_plot(folder_name, os.path.join(root_folder, folder_name), int(enemy_count), i, "{}".format(explanation))
         i += 1
@@ -123,15 +141,17 @@ plt.title("")
 plt.legend(loc='upper left')
 fig = plt.gcf()
 fig.set_size_inches(((8, 4.5)))
-fig.savefig("{}.jpg".format(os.path.join(root_folder, "pacman_0enemy")), bbox_inches='tight')
-fig.savefig("{}.pdf".format(os.path.join(root_folder, "pacman_0enemy")), format="pdf", bbox_inches='tight')
+fig.savefig("{}_{}.jpg".format(os.path.join(root_folder, "pacman_0enemy"), str.join('-', RANDOM_SEED)), bbox_inches='tight')
+fig.savefig("{}_{}.pdf".format(os.path.join(root_folder, "pacman_0enemy"), str.join('-', RANDOM_SEED)), format="pdf", bbox_inches='tight')
 # plt.show()
 plt.clf()
 
 
 legend_use_map = []
 i = 1
-for enemy_count, folder_name, explanation,_ in pacman_txt:
+for enemy_count, folder_name, explanation, note in pacman_txt:
+    if not note in RANDOM_SEED:
+        continue
     if enemy_count == '2':
         draw_plot(folder_name, os.path.join(root_folder, folder_name), int(enemy_count), i, "{}".format(explanation))
         i += 1
@@ -141,12 +161,12 @@ plt.title("")
 plt.legend(loc='upper left')
 fig = plt.gcf()
 fig.set_size_inches(((8, 4.5)))
-fig.savefig("{}.jpg".format(os.path.join(root_folder, "pacman_2enemy")), bbox_inches='tight')
-fig.savefig("{}.pdf".format(os.path.join(root_folder, "pacman_2enemy")), format="pdf", bbox_inches='tight')
+fig.savefig("{}_{}.jpg".format(os.path.join(root_folder, "pacman_2enemy"), str.join('-', RANDOM_SEED)), bbox_inches='tight')
+fig.savefig("{}_{}.pdf".format(os.path.join(root_folder, "pacman_2enemy"), str.join('-', RANDOM_SEED)), format="pdf", bbox_inches='tight')
 # plt.show()
 plt.clf()
 
-
+exit()
 
 legend_use_map = []
 i = 1
@@ -213,5 +233,5 @@ fig = plt.gcf()
 fig.set_size_inches(((7, 8)))
 fig.savefig("{}.jpg".format(os.path.join(root_folder, "pacman_rest_2enemy")), bbox_inches='tight')
 fig.savefig("{}.pdf".format(os.path.join(root_folder, "pacman_rest_2enemy")), format="pdf", bbox_inches='tight')
-plt.show()
+# plt.show()
 plt.clf()
